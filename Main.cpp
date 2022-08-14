@@ -214,3 +214,61 @@ BOOL RegisterTdxFunc(PluginTCalcFuncInfo **pInfo)
 
     return FALSE;
 }
+
+void DoubleToFloat(int count, double *d, std::vector<float> &f) {
+    f.resize(count);
+    for (int i=0;i<count;++i) {
+        f[i] = d[i];
+    }
+}
+
+void FloatToDouble(int count, std::vector<float> &f, double *d) {
+    for (int i=0;i<count;++i) {
+        d[i] = f[i];
+    }
+}
+
+#define UPFunc(mark) \
+void UPFunc##mark(int nCount, double *dout, double *d1, double *d2, double *d3) { \
+    std::vector<float> f1, f2, f3; \
+    DoubleToFloat(nCount, d1, f1); \
+    DoubleToFloat(nCount, d2, f2); \
+    DoubleToFloat(nCount, d3, f3); \
+    std::vector<float> fout(nCount); \
+    Func##mark(nCount, fout.data(), f1.data(), f2.data(), f3.data()); \
+    FloatToDouble(nCount, fout, dout); \
+}
+
+UPFunc(1)
+UPFunc(2)
+UPFunc(3)
+UPFunc(4)
+UPFunc(5)
+UPFunc(6)
+UPFunc(7)
+UPFunc(8)
+UPFunc(9)
+
+static PluginUPCalcFuncInfo UPInfo[] =
+    {
+        {1, &UPFunc1},
+        {2, &UPFunc2},
+        {3, &UPFunc3},
+        {4, &UPFunc4},
+        {5, &UPFunc5},
+        {6, &UPFunc6},
+        {7, &UPFunc7},
+        {8, &UPFunc8},
+        {9, &UPFunc9},
+        {0, NULL}};
+
+BOOL RegisterUPCalcFunc(PluginUPCalcFuncInfo **pInfo) {
+    if (*pInfo == NULL)
+    {
+        *pInfo = UPInfo;
+
+        return TRUE;
+    }
+
+    return FALSE;
+}

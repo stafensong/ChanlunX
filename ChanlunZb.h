@@ -2,6 +2,7 @@
 #define __CHANLUNZB_H__
 
 #include <windows.h>
+#include "PluginUPCalcFunc.h"
 
 #pragma pack(push, 1)
 
@@ -102,6 +103,8 @@ extern "C"
 {
 #endif
 
+    //******************************优品******************************//
+    __declspec(dllexport) BOOL RegisterUPCalcFunc(PluginUPCalcFuncInfo **pInfo);
     /********************************************************************/
     //******************************通达信******************************//
     /********************************************************************/
